@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- تطبيق الوضع قبل رسم الصفحة لمنع الوميض: الداكن هو الافتراضي، ويُحفظ اختيار الزائر -->
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem("theme");
+        document.documentElement.setAttribute("data-theme", saved === "light" ? "light" : "dark");
+      } catch (e) { document.documentElement.setAttribute("data-theme", "dark"); }
+    })();
+  </script>
+
+  <title>اتصل بنا | المدونة التقنية الأولى</title>
+  <meta name="description" content="تواصل مع المدونة التقنية الأولى عبر بريد الدعم أو قناة تليجرام أو قناة واتساب.">
+  <meta name="author" content="المدونة التقنية الأولى">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#0a1020">
+  <link rel="canonical" href="https://techblogfirst.netlify.app/contact.html">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ar_AR">
+  <meta property="og:site_name" content="المدونة التقنية الأولى">
+  <meta property="og:title" content="اتصل بنا | المدونة التقنية الأولى">
+  <meta property="og:description" content="تواصل مع المدونة التقنية الأولى عبر بريد الدعم أو قناة تليجرام أو قناة واتساب.">
+  <meta property="og:url" content="https://techblogfirst.netlify.app/contact.html">
+  <meta property="og:image" content="https://techblogfirst.netlify.app/icons/android-chrome-512x512.png">
+
+  <!-- Twitter Cards -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="اتصل بنا | المدونة التقنية الأولى">
+  <meta name="twitter:description" content="تواصل مع المدونة التقنية الأولى عبر بريد الدعم أو قناة تليجرام أو قناة واتساب.">
+  <meta name="twitter:image" content="https://techblogfirst.netlify.app/icons/android-chrome-512x512.png">
+
+  <!-- الأيقونات و PWA -->
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
+  <link rel="manifest" href="manifest.json">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="التقنية الأولى">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+
+  <!-- OneSignal: الإشعارات الفورية (استبدل YOUR-ONESIGNAL-APP-ID بمعرّفك ثم فعّل USE_ONESIGNAL في sw.js) -->
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+  <script>
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    OneSignalDeferred.push(async function (OneSignal) {
+      var appId = "YOUR-ONESIGNAL-APP-ID";
+      if (appId.indexOf("YOUR-") === 0) return; // لا تُفعَّل قبل وضع المعرّف الحقيقي
+      // نستخدم sw.js (يستورد ملف OneSignal داخله) كي لا يتعارض مع Service Worker الخاص بالـ PWA
+      await OneSignal.init({ appId: appId, serviceWorkerPath: "sw.js" });
+    });
+  </script>
+</head>
+
+<body data-page="contact">
+  <a class="skip-link" href="#main">تخطَّ إلى المحتوى</a>
+
+  <header>
+    <nav class="navbar" aria-label="التنقل الرئيسي">
+      <div class="container">
+        <a class="brand" href="index.html" aria-label="المدونة التقنية الأولى - الصفحة الرئيسية">
+          <img class="brand-logo" src="icons/logo-72.png" width="36" height="36" alt="">
+          <span class="brand-name">المدونة التقنية الأولى</span>
+        </a>
+        <ul class="nav-links" id="nav-links"></ul>
+        <div class="nav-actions">
+          <button class="icon-btn" id="theme-toggle" type="button" aria-label="التبديل إلى الوضع الفاتح" aria-pressed="true">☀️</button>
+          <button class="icon-btn" id="menu-toggle" type="button" aria-label="فتح القائمة" aria-controls="drawer" aria-expanded="false">☰</button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- القائمة الجانبية: الأقسام السبعة فقط (تُولَّد من SECTIONS في script.js) -->
+  <div class="drawer-overlay" id="drawer-overlay"></div>
+  <aside class="drawer" id="drawer" aria-label="قائمة الأقسام">
+    <div class="drawer-head">
+      <h2 class="drawer-title">الأقسام</h2>
+      <button class="icon-btn" id="drawer-close" type="button" aria-label="إغلاق القائمة">✕</button>
+    </div>
+    <ul class="drawer-list" id="drawer-list"></ul>
+  </aside>
+
+  <main id="main">
+    <article class="article-wrap" aria-labelledby="contact-title">
+      <header class="article-header">
+        <h1 class="article-title" id="contact-title">اتصل بنا</h1>
+        
+      </header>
+      <div class="article-content">
+
+        <p class="lead">يسعدنا تواصلك معنا للاقتراحات، أو الإبلاغ عن خطأ، أو الاستفسار عن حقوق النشر. اختر الوسيلة الأنسب لك:</p>
+
+        <div class="contact-grid">
+          <a class="contact-card contact-card--mail" href="mailto:l123l123l12345@gmail.com">
+            <svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#mail"></use></svg>
+            <span class="contact-card-title">البريد الإلكتروني للدعم</span>
+            <span class="contact-card-value" dir="ltr">l123l123l12345@gmail.com</span>
+          </a>
+          <a class="contact-card contact-card--telegram" href="https://t.me/TechBlogFirst" target="_blank" rel="noopener noreferrer">
+            <svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#telegram"></use></svg>
+            <span class="contact-card-title">قناة تليجرام</span>
+            <span class="contact-card-value" dir="ltr">t.me/TechBlogFirst</span>
+          </a>
+          <a class="contact-card contact-card--whatsapp" href="https://whatsapp.com/channel/0029Vb7XyAp1CYoQGcXPFg0L" target="_blank" rel="noopener noreferrer">
+            <svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#whatsapp"></use></svg>
+            <span class="contact-card-title">قناة واتساب</span>
+            <span class="contact-card-value">انضم إلى القناة</span>
+          </a>
+        </div>
+
+        <h2>بخصوص حقوق النشر</h2>
+        <p>إن رأيت أن محتوى في المدونة يمسّ حقوقك، راسلنا على بريد الدعم أعلاه وسنعالج الأمر فوراً. اطّلع على <a href="privacy.html">سياسة الخصوصية</a> لمعرفة التفاصيل.</p>
+
+      </div>
+    </article>
+  </main>
+
+  <!-- التذييل: روابط الصفحات + قنوات المتابعة (HTML/CSS/SVG فقط) -->
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <section class="footer-about" aria-label="عن المدونة">
+        <a class="brand brand--footer" href="index.html">
+          <img class="brand-logo" src="icons/logo-72.png" width="36" height="36" alt="" loading="lazy">
+          <span class="brand-name">المدونة التقنية الأولى</span>
+        </a>
+        <p>منصة عربية غير ربحية في الأساس لنشر المعرفة التقنية.</p>
+      </section>
+
+      <nav class="footer-nav" aria-label="روابط التذييل">
+        <h2 class="footer-heading">روابط</h2>
+        <ul>
+          <li><a href="index.html">الرئيسية</a></li>
+          <li><a href="about.html">من نحن</a></li>
+          <li><a href="contact.html">اتصل بنا</a></li>
+          <li><a href="privacy.html">سياسة الخصوصية</a></li>
+        </ul>
+      </nav>
+
+      <section class="footer-channels" aria-label="قنوات المتابعة">
+        <h2 class="footer-heading">تابعنا</h2>
+        <div class="channel-buttons">
+          <a class="channel-btn channel-btn--telegram" href="https://t.me/TechBlogFirst" target="_blank" rel="noopener noreferrer"><svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#telegram"></use></svg><span>قناة تليجرام</span></a>
+          <a class="channel-btn channel-btn--whatsapp" href="https://whatsapp.com/channel/0029Vb7XyAp1CYoQGcXPFg0L" target="_blank" rel="noopener noreferrer"><svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#whatsapp"></use></svg><span>قناة واتساب</span></a>
+          <a class="channel-btn channel-btn--mail" href="mailto:l123l123l12345@gmail.com"><svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#mail"></use></svg><span>بريد الدعم</span></a>
+        </div>
+      </section>
+    </div>
+    <p class="footer-copy">© <span id="year"></span> المدونة التقنية الأولى. جميع الحقوق محفوظة.</p>
+  </footer>
+
+  <!-- زر واتساب العائم: يوجّه مباشرة إلى قناة الواتساب -->
+  <a class="fab-whatsapp" href="https://whatsapp.com/channel/0029Vb7XyAp1CYoQGcXPFg0L" target="_blank" rel="noopener noreferrer" aria-label="تابع قناتنا على واتساب" title="قناة واتساب"><svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#whatsapp"></use></svg></a>
+
+  <button class="back-to-top" id="back-to-top" type="button" aria-label="العودة إلى أعلى الصفحة">↑</button>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- تطبيق الوضع قبل رسم الصفحة لمنع الوميض: الداكن هو الافتراضي، ويُحفظ اختيار الزائر -->
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem("theme");
+        document.documentElement.setAttribute("data-theme", saved === "light" ? "light" : "dark");
+      } catch (e) { document.documentElement.setAttribute("data-theme", "dark"); }
+    })();
+  </script>
+
+  <title>سياسة الخصوصية | المدونة التقنية الأولى</title>
+  <meta name="description" content="سياسة الخصوصية: لا نجمع أي بيانات شخصية، التخزين محلي على جهازك فقط، ونحفظ حقوق أصحاب المحتوى الخارجي.">
+  <meta name="author" content="المدونة التقنية الأولى">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#0a1020">
+  <link rel="canonical" href="https://techblogfirst.netlify.app/privacy.html">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ar_AR">
+  <meta property="og:site_name" content="المدونة التقنية الأولى">
+  <meta property="og:title" content="سياسة الخصوصية | المدونة التقنية الأولى">
+  <meta property="og:description" content="سياسة الخصوصية: لا نجمع أي بيانات شخصية، التخزين محلي على جهازك فقط، ونحفظ حقوق أصحاب المحتوى الخارجي.">
+  <meta property="og:url" content="https://techblogfirst.netlify.app/privacy.html">
+  <meta property="og:image" content="https://techblogfirst.netlify.app/icons/android-chrome-512x512.png">
+
+  <!-- Twitter Cards -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="سياسة الخصوصية | المدونة التقنية الأولى">
+  <meta name="twitter:description" content="سياسة الخصوصية: لا نجمع أي بيانات شخصية، التخزين محلي على جهازك فقط، ونحفظ حقوق أصحاب المحتوى الخارجي.">
+  <meta name="twitter:image" content="https://techblogfirst.netlify.app/icons/android-chrome-512x512.png">
+
+  <!-- الأيقونات و PWA -->
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
+  <link rel="manifest" href="manifest.json">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="التقنية الأولى">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+
+  <!-- OneSignal: الإشعارات الفورية (استبدل YOUR-ONESIGNAL-APP-ID بمعرّفك ثم فعّل USE_ONESIGNAL في sw.js) -->
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+  <script>
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    OneSignalDeferred.push(async function (OneSignal) {
+      var appId = "YOUR-ONESIGNAL-APP-ID";
+      if (appId.indexOf("YOUR-") === 0) return; // لا تُفعَّل قبل وضع المعرّف الحقيقي
+      // نستخدم sw.js (يستورد ملف OneSignal داخله) كي لا يتعارض مع Service Worker الخاص بالـ PWA
+      await OneSignal.init({ appId: appId, serviceWorkerPath: "sw.js" });
+    });
+  </script>
+</head>
+
+<body data-page="privacy">
+  <a class="skip-link" href="#main">تخطَّ إلى المحتوى</a>
+
+  <header>
+    <nav class="navbar" aria-label="التنقل الرئيسي">
+      <div class="container">
+        <a class="brand" href="index.html" aria-label="المدونة التقنية الأولى - الصفحة الرئيسية">
+          <img class="brand-logo" src="icons/logo-72.png" width="36" height="36" alt="">
+          <span class="brand-name">المدونة التقنية الأولى</span>
+        </a>
+        <ul class="nav-links" id="nav-links"></ul>
+        <div class="nav-actions">
+          <button class="icon-btn" id="theme-toggle" type="button" aria-label="التبديل إلى الوضع الفاتح" aria-pressed="true">☀️</button>
+          <button class="icon-btn" id="menu-toggle" type="button" aria-label="فتح القائمة" aria-controls="drawer" aria-expanded="false">☰</button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- القائمة الجانبية: الأقسام السبعة فقط (تُولَّد من SECTIONS في script.js) -->
+  <div class="drawer-overlay" id="drawer-overlay"></div>
+  <aside class="drawer" id="drawer" aria-label="قائمة الأقسام">
+    <div class="drawer-head">
+      <h2 class="drawer-title">الأقسام</h2>
+      <button class="icon-btn" id="drawer-close" type="button" aria-label="إغلاق القائمة">✕</button>
+    </div>
+    <ul class="drawer-list" id="drawer-list"></ul>
+  </aside>
+
+  <main id="main">
+    <article class="article-wrap" aria-labelledby="privacy-title">
+      <header class="article-header">
+        <h1 class="article-title" id="privacy-title">سياسة الخصوصية</h1>
+        <p class="article-meta">آخر تحديث: نوفمبر 2026</p>
+      </header>
+      <div class="article-content">
+
+        <h2>لا نجمع بياناتك</h2>
+        <p>هذه المدونة موقع ثابت لا يملك خادماً خاصاً. لا نجمع أي بيانات شخصية عنك، ولا نستخدم حسابات أو نماذج تسجيل أو ملفات تعريف ارتباط للتتبع أو لتحليل سلوكك.</p>
+
+        <h2>التخزين المحلي والعمل بلا إنترنت</h2>
+        <p>نحفظ في متصفحك فقط تفضيل الوضع الداكن/الفاتح. كما يخزّن الموقع (بصفته تطبيق ويب تقدمي PWA) نسخاً من الصفحات والمقالات التي زرتها داخل ذاكرة جهازك ليعمل بلا اتصال. كل ذلك يبقى على جهازك ولا يُرسل إلينا ولا إلى أي جهة، ويمكنك حذفه في أي وقت من إعدادات المتصفح أو بإزالة التطبيق.</p>
+
+        <h2>الاستماع للمقال</h2>
+        <p>ميزة «استمع للمقال» تعمل بالكامل داخل متصفحك عبر محرك النطق المحلي، ولا يُرسَل أي نص أو صوت إلى خدمات خارجية.</p>
+
+        <h2>خدمات وموارد خارجية</h2>
+        <ul>
+          <li><strong>الخطوط:</strong> تُحمَّل من Google Fonts، وقد يستقبل مزوّد الخط عنوان IP الخاص بك عند التحميل.</li>
+          <li><strong>المكتبات:</strong> نستخدم مكتبتي marked.js (تحويل Markdown) و Prism.js (تلوين الأكواد) عبر شبكات CDN.</li>
+          <li><strong>الإشعارات (اختياري):</strong> إن وافقت على استقبال الإشعارات، تتولى خدمة OneSignal إدارة اشتراكك التقني. لن تُفعَّل إلا بموافقتك الصريحة، ويمكنك إلغاؤها في أي وقت من إعدادات المتصفح.</li>
+          <li><strong>قنوات التواصل:</strong> عند فتح روابط قناتنا على تليجرام أو واتساب أو مراسلتنا بالبريد، تنتقل إلى تلك المنصات وتخضع لسياساتها الخاصة.</li>
+        </ul>
+
+        <h2>حقوق الملكية</h2>
+        <p>جميع الحقوق الأصلية الخاصة بالموقع (تصميمه ونصوصه ومحتواه الأصلي الذي ننتجه) مملوكة لنا. ولا يسري ذلك على المواد المنسوبة صراحةً إلى أصحابها كما هو موضح أدناه.</p>
+
+        <h2>الموارد الخارجية ونسبتها لأصحابها</h2>
+        <p>نستعين في المحتوى التقني بموارد خارجية من أكواد ومكتبات وفيديوهات (مثل روابط يوتيوب التي نستخدمها بكثافة وبشفافية تامة للإحالة والتوضيح). هذه الموارد <strong>لا ننسبها أبداً لأنفسنا</strong>، بل ننسبها لحقوق ناشريها الأصليين، استناداً إلى تراخيص النشر المتاحة مثل رخص المشاع الإبداعي (Creative Commons) وغيرها. نحن لا ننشر أصلاً أي محتوى غير مصرّح به، وإنما نُحيل إليه بشفافية لدعم المحتوى التقني العربي.</p>
+
+        <h2>حقوق الغير</h2>
+        <p>إذا شعر أي طرف أو صاحب حق بأننا تجاهلنا أو تعدينا على حقوقه بطريقة ما، فإننا ندعوه للاتصال بنا فوراً عبر بريد الدعم المخصص في <a href="contact.html">صفحة اتصل بنا</a> لنقوم بمعالجة الأمر فوراً.</p>
+
+        <h2>الروابط الخارجية</h2>
+        <p>قد تحتوي المقالات على روابط لمواقع أخرى؛ نحن غير مسؤولين عن سياسات الخصوصية فيها.</p>
+
+        <h2>التواصل</h2>
+        <p>لأي استفسار حول هذه السياسة تواصل معنا عبر <a href="contact.html">صفحة اتصل بنا</a>.</p>
+
+      </div>
+    </article>
+  </main>
+
+  <!-- التذييل: روابط الصفحات + قنوات المتابعة (HTML/CSS/SVG فقط) -->
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <section class="footer-about" aria-label="عن المدونة">
+        <a class="brand brand--footer" href="index.html">
+          <img class="brand-logo" src="icons/logo-72.png" width="36" height="36" alt="" loading="lazy">
+          <span class="brand-name">المدونة التقنية الأولى</span>
+        </a>
+        <p>منصة عربية غير ربحية في الأساس لنشر المعرفة التقنية.</p>
+      </section>
+
+      <nav class="footer-nav" aria-label="روابط التذييل">
+        <h2 class="footer-heading">روابط</h2>
+        <ul>
+          <li><a href="index.html">الرئيسية</a></li>
+          <li><a href="about.html">من نحن</a></li>
+          <li><a href="contact.html">اتصل بنا</a></li>
+          <li><a href="privacy.html">سياسة الخصوصية</a></li>
+        </ul>
+      </nav>
+
+      <section class="footer-channels" aria-label="قنوات المتابعة">
+        <h2 class="footer-heading">تابعنا</h2>
+        <div class="channel-buttons">
+          <a class="channel-btn channel-btn--telegram" href="https://t.me/TechBlogFirst" target="_blank" rel="noopener noreferrer"><svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#telegram"></use></svg><span>قناة تليجرام</span></a>
+          <a class="channel-btn channel-btn--whatsapp" href="https://whatsapp.com/channel/0029Vb7XyAp1CYoQGcXPFg0L" target="_blank" rel="noopener noreferrer"><svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#whatsapp"></use></svg><span>قناة واتساب</span></a>
+          <a class="channel-btn channel-btn--mail" href="mailto:l123l123l12345@gmail.com"><svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#mail"></use></svg><span>بريد الدعم</span></a>
+        </div>
+      </section>
+    </div>
+    <p class="footer-copy">© <span id="year"></span> المدونة التقنية الأولى. جميع الحقوق محفوظة.</p>
+  </footer>
+
+  <!-- زر واتساب العائم: يوجّه مباشرة إلى قناة الواتساب -->
+  <a class="fab-whatsapp" href="https://whatsapp.com/channel/0029Vb7XyAp1CYoQGcXPFg0L" target="_blank" rel="noopener noreferrer" aria-label="تابع قناتنا على واتساب" title="قناة واتساب"><svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#whatsapp"></use></svg></a>
+
+  <button class="back-to-top" id="back-to-top" type="button" aria-label="العودة إلى أعلى الصفحة">↑</button>
+
+  <script src="script.js"></script>
+</body>
+</html>

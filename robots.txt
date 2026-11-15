@@ -1,0 +1,52 @@
+# robots.txt — توجيه الزواحف
+#
+# صفحات الإدارة وصفحة الاتصال محمية من الأرشفة بوسم <meta name="robots" content="noindex, nofollow">
+# داخل الصفحات نفسها، ولذلك لا نضع لها Disallow هنا: يجب أن تتمكن الزواحف من قراءتها لترى الوسم.
+
+User-agent: *
+Allow: /
+
+# ---- حظر بوتات تدريب الذكاء الاصطناعي ----
+User-agent: GPTBot
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: Claude-Web
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: Applebot-Extended
+Disallow: /
+
+User-agent: cohere-ai
+Disallow: /
+
+User-agent: Meta-ExternalAgent
+Disallow: /
+
+User-agent: FacebookBot
+Disallow: /
+
+User-agent: Diffbot
+Disallow: /
+
+User-agent: ImagesiftBot
+Disallow: /
+
+User-agent: Omgilibot
+Disallow: /
+
+Sitemap: https://techblogfirst.netlify.app/sitemap.xml

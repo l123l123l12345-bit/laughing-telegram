@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- تطبيق الوضع قبل رسم الصفحة لمنع الوميض: الداكن هو الافتراضي، ويُحفظ اختيار الزائر -->
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem("theme");
+        document.documentElement.setAttribute("data-theme", saved === "light" ? "light" : "dark");
+      } catch (e) { document.documentElement.setAttribute("data-theme", "dark"); }
+    })();
+  </script>
+
+  <title>من نحن | المدونة التقنية الأولى</title>
+  <meta name="description" content="مبادرة معرفية غير ربحية في الأساس تهدف إلى نشر المعرفة التقنية في العالم العربي وتشجيع الإتقان وتطوير الذات.">
+  <meta name="author" content="المدونة التقنية الأولى">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#0a1020">
+  <link rel="canonical" href="https://techblogfirst.netlify.app/about.html">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ar_AR">
+  <meta property="og:site_name" content="المدونة التقنية الأولى">
+  <meta property="og:title" content="من نحن | المدونة التقنية الأولى">
+  <meta property="og:description" content="مبادرة معرفية غير ربحية في الأساس تهدف إلى نشر المعرفة التقنية في العالم العربي وتشجيع الإتقان وتطوير الذات.">
+  <meta property="og:url" content="https://techblogfirst.netlify.app/about.html">
+  <meta property="og:image" content="https://techblogfirst.netlify.app/icons/android-chrome-512x512.png">
+
+  <!-- Twitter Cards -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="من نحن | المدونة التقنية الأولى">
+  <meta name="twitter:description" content="مبادرة معرفية غير ربحية في الأساس تهدف إلى نشر المعرفة التقنية في العالم العربي وتشجيع الإتقان وتطوير الذات.">
+  <meta name="twitter:image" content="https://techblogfirst.netlify.app/icons/android-chrome-512x512.png">
+
+  <!-- الأيقونات و PWA -->
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
+  <link rel="manifest" href="manifest.json">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="التقنية الأولى">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+
+  <!-- OneSignal: الإشعارات الفورية (استبدل YOUR-ONESIGNAL-APP-ID بمعرّفك ثم فعّل USE_ONESIGNAL في sw.js) -->
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+  <script>
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    OneSignalDeferred.push(async function (OneSignal) {
+      var appId = "YOUR-ONESIGNAL-APP-ID";
+      if (appId.indexOf("YOUR-") === 0) return; // لا تُفعَّل قبل وضع المعرّف الحقيقي
+      // نستخدم sw.js (يستورد ملف OneSignal داخله) كي لا يتعارض مع Service Worker الخاص بالـ PWA
+      await OneSignal.init({ appId: appId, serviceWorkerPath: "sw.js" });
+    });
+  </script>
+</head>
+
+<body data-page="about">
+  <a class="skip-link" href="#main">تخطَّ إلى المحتوى</a>
+
+  <header>
+    <nav class="navbar" aria-label="التنقل الرئيسي">
+      <div class="container">
+        <a class="brand" href="index.html" aria-label="المدونة التقنية الأولى - الصفحة الرئيسية">
+          <img class="brand-logo" src="icons/logo-72.png" width="36" height="36" alt="">
+          <span class="brand-name">المدونة التقنية الأولى</span>
+        </a>
+        <ul class="nav-links" id="nav-links"></ul>
+        <div class="nav-actions">
+          <button class="icon-btn" id="theme-toggle" type="button" aria-label="التبديل إلى الوضع الفاتح" aria-pressed="true">☀️</button>
+          <button class="icon-btn" id="menu-toggle" type="button" aria-label="فتح القائمة" aria-controls="drawer" aria-expanded="false">☰</button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- القائمة الجانبية: الأقسام السبعة فقط (تُولَّد من SECTIONS في script.js) -->
+  <div class="drawer-overlay" id="drawer-overlay"></div>
+  <aside class="drawer" id="drawer" aria-label="قائمة الأقسام">
+    <div class="drawer-head">
+      <h2 class="drawer-title">الأقسام</h2>
+      <button class="icon-btn" id="drawer-close" type="button" aria-label="إغلاق القائمة">✕</button>
+    </div>
+    <ul class="drawer-list" id="drawer-list"></ul>
+  </aside>
+
+  <main id="main">
+    <article class="article-wrap" aria-labelledby="about-title">
+      <header class="article-header">
+        <h1 class="article-title" id="about-title">من نحن</h1>
+        
+      </header>
+      <div class="article-content">
+
+        <p class="lead"><strong>المدونة التقنية الأولى</strong> مبادرة معرفية <strong>غير ربحية في الأساس</strong>، وُلدت من قناعة راسخة: أن المعرفة التقنية حقٌّ للجميع، وأن الجمهور العربي يستحق محتوى تقنياً رصيناً بلغته، واضحاً في شرحه، عميقاً في فائدته.</p>
+
+        <h2>رسالتنا</h2>
+        <p>نعمل على نشر المعرفة التقنية في العالم العربي وتبسيطها، من أساسيات البرمجة إلى أحدث ما وصل إليه الذكاء الاصطناعي وأمن المعلومات. هدفنا أن نسهم في بناء جيلٍ عربي لا يكتفي باستخدام التقنية، بل <strong>يفهمها ويصنعها ويطوّرها</strong>.</p>
+
+        <h2>ماذا تجد هنا؟</h2>
+        <ul>
+          <li><strong>الحياة الذكية:</strong> توظيف التقنية في تسهيل الحياة اليومية.</li>
+          <li><strong>الأخبار:</strong> متابعة أهم مستجدات عالم التقنية.</li>
+          <li><strong>لغات البرمجة:</strong> شروحات تأسيسية وتطبيقية تبني الإتقان خطوة بخطوة.</li>
+          <li><strong>عام (استخدام الهواتف):</strong> نصائح عملية للاستفادة القصوى من الهواتف الذكية.</li>
+          <li><strong>قسم المطورين وأمن المعلومات:</strong> ممارسات احترافية لكتابة برمجيات آمنة وحماية البيانات.</li>
+          <li><strong>الكورسات:</strong> مسارات تعلّم منظّمة تأخذ بيدك من البداية إلى الاحتراف.</li>
+          <li><strong>الذكاء الاصطناعي:</strong> فهم الأدوات والمفاهيم التي تصنع المستقبل.</li>
+        </ul>
+
+        <h2>الإتقان يُبنى بالعمل الجاد</h2>
+        <p>لا يوجد طريق مختصر نحو إتقان البرمجيات؛ الطريق هو الممارسة المنتظمة والصبر على الأخطاء. كل سطر برمجي تكتبه، وكل خطأ تصحّحه، وكل مشروع تُتمّه، يضيف إلى مهارتك طبقةً جديدة من الفهم. العلم لا يُوهَب، بل يُبنى بالجهد يوماً بعد يوم.</p>
+
+        <h2>طوّر نفسك باستمرار</h2>
+        <ul>
+          <li>خصّص وقتاً ثابتاً للتعلّم كل يوم، ولو كان قصيراً؛ فالاستمرار يتفوّق على الحماس المؤقت.</li>
+          <li>حوّل كل مفهوم جديد إلى مشروع صغير تطبّقه بنفسك.</li>
+          <li>اقرأ شيفرات الآخرين بقدر ما تكتب شيفراتك.</li>
+          <li>اشرح ما تعلّمته لغيرك؛ فالشرح أقوى وسائل الفهم.</li>
+        </ul>
+
+        <h2>شارك المعرفة… فهي تزداد بالمشاركة</h2>
+        <p>المعرفة التقنية لا تنقص بالمشاركة، بل تتضاعف قيمتها كلما وصلت إلى عقلٍ جديد. إن أفادك مقال هنا فأرسله لمن يحتاجه، وادعُ كل من يسعى للتعلّم إلى زيارة المدونة ومتابعة قنواتها. بمشاركتك تصنع أثراً، وبأثرك يكبر المحتوى التقني العربي.</p>
+
+        <div class="cta-box">
+          <p class="cta-title">انشر المدونة وساهم في نشر العلم</p>
+          <div class="cta-buttons">
+            <a class="btn btn-whatsapp" data-share="whatsapp" href="https://whatsapp.com/channel/0029Vb7XyAp1CYoQGcXPFg0L" target="_blank" rel="noopener noreferrer"><svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#whatsapp"></use></svg>شارك عبر واتساب</a>
+            <a class="btn btn-telegram" data-share="telegram" href="https://t.me/TechBlogFirst" target="_blank" rel="noopener noreferrer"><svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#telegram"></use></svg>شارك عبر تليجرام</a>
+            <button class="btn" type="button" data-copy-site><svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#link"></use></svg>انسخ رابط المدونة</button>
+          </div>
+        </div>
+
+        <p>ابدأ اليوم؛ فكل خبير كان يوماً مبتدئاً قرّر ألّا يتوقف.</p>
+
+      </div>
+    </article>
+  </main>
+
+  <!-- التذييل: روابط الصفحات + قنوات المتابعة (HTML/CSS/SVG فقط) -->
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <section class="footer-about" aria-label="عن المدونة">
+        <a class="brand brand--footer" href="index.html">
+          <img class="brand-logo" src="icons/logo-72.png" width="36" height="36" alt="" loading="lazy">
+          <span class="brand-name">المدونة التقنية الأولى</span>
+        </a>
+        <p>منصة عربية غير ربحية في الأساس لنشر المعرفة التقنية.</p>
+      </section>
+
+      <nav class="footer-nav" aria-label="روابط التذييل">
+        <h2 class="footer-heading">روابط</h2>
+        <ul>
+          <li><a href="index.html">الرئيسية</a></li>
+          <li><a href="about.html">من نحن</a></li>
+          <li><a href="contact.html">اتصل بنا</a></li>
+          <li><a href="privacy.html">سياسة الخصوصية</a></li>
+        </ul>
+      </nav>
+
+      <section class="footer-channels" aria-label="قنوات المتابعة">
+        <h2 class="footer-heading">تابعنا</h2>
+        <div class="channel-buttons">
+          <a class="channel-btn channel-btn--telegram" href="https://t.me/TechBlogFirst" target="_blank" rel="noopener noreferrer"><svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#telegram"></use></svg><span>قناة تليجرام</span></a>
+          <a class="channel-btn channel-btn--whatsapp" href="https://whatsapp.com/channel/0029Vb7XyAp1CYoQGcXPFg0L" target="_blank" rel="noopener noreferrer"><svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#whatsapp"></use></svg><span>قناة واتساب</span></a>
+          <a class="channel-btn channel-btn--mail" href="mailto:l123l123l12345@gmail.com"><svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#mail"></use></svg><span>بريد الدعم</span></a>
+        </div>
+      </section>
+    </div>
+    <p class="footer-copy">© <span id="year"></span> المدونة التقنية الأولى. جميع الحقوق محفوظة.</p>
+  </footer>
+
+  <!-- زر واتساب العائم: يوجّه مباشرة إلى قناة الواتساب -->
+  <a class="fab-whatsapp" href="https://whatsapp.com/channel/0029Vb7XyAp1CYoQGcXPFg0L" target="_blank" rel="noopener noreferrer" aria-label="تابع قناتنا على واتساب" title="قناة واتساب"><svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#whatsapp"></use></svg></a>
+
+  <button class="back-to-top" id="back-to-top" type="button" aria-label="العودة إلى أعلى الصفحة">↑</button>
+
+  <script src="script.js"></script>
+</body>
+</html>
